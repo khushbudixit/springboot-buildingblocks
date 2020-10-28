@@ -6,10 +6,15 @@ import java.util.Optional;
 //hi
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
 import com.stacksimplify.restservices.services.UserService;
 import com.stacksimplify.restservices.entities.User;
+import com.stacksimplify.restservices.exception.UserNotFoundException;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +44,11 @@ public class UserController {
 	// getUserById
 	@GetMapping("/users/{id}")
 	public Optional<User> getUserById(@PathVariable("id") Long id){
-		return UserService.getUserById(id);
+		try {
+			return UserService.getUserById(id);
+		} catch (UserNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
+		}
 		
 		
 	}
@@ -48,7 +57,13 @@ public class UserController {
 	@PutMapping("/users/{id}")
 	public User updateUserById(@PathVariable("id") Long id, @RequestBody User user ) {
 		
-		return UserService.updateUserById(id, user);
+		try {
+			
+			return UserService.updateUserById(id, user);
+			
+		} catch (UserNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,ex.getMessage());
+		}
 		
 		
 	}
