@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
+
+@RequestMapping(value="/users")
 @RestController
 public class UserController {
 
 	@Autowired
 	private UserService UserService;
 	
-	@GetMapping("/users")
+	@GetMapping
 	
 	public List<User> getAllUsers(){
 		
@@ -34,7 +36,7 @@ public class UserController {
 	}
 	
 	//create user
-	@PostMapping("/users")
+	@PostMapping
 	public User createUser(@RequestBody User user) {
 		return UserService.createUser(user);
 	 	
@@ -42,7 +44,7 @@ public class UserController {
 	
 	
 	// getUserById
-	@GetMapping("/users/{id}")
+	@GetMapping("/{id}")
 	public Optional<User> getUserById(@PathVariable("id") Long id){
 		try {
 			return UserService.getUserById(id);
@@ -54,7 +56,7 @@ public class UserController {
 	}
 	
 	//updateuserbyID
-	@PutMapping("/users/{id}")
+	@PutMapping("/{id}")
 	public User updateUserById(@PathVariable("id") Long id, @RequestBody User user ) {
 		
 		try {
@@ -71,7 +73,7 @@ public class UserController {
 	
 	//deleteuserbyid
 	
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/{id}")
 	public void deleteUserById(@PathVariable("id") Long id) {
 		UserService.deleteUserById(id);
 	}

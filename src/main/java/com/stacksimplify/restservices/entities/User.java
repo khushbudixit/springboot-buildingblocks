@@ -1,7 +1,16 @@
 package com.stacksimplify.restservices.entities;
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+
 @Entity
 @Table(name="user")
 public class User {
@@ -10,9 +19,13 @@ public class User {
 	@GeneratedValue
 	private long id;
 	
+	
+	@NotEmpty(message="please provide valid username")
 	@Column(name="USER_NAME",length=50,nullable=false,unique=true)
 	private String username;
 	
+	
+	@Size(min=2, message="FirstName should have atleast 2 characters")            
 	@Column(name="FIRST_NAME",length=50,nullable=false)
 	private String firstname;
 	
@@ -27,6 +40,9 @@ public class User {
 	
 	@Column(name="SSN",length=50,nullable=false,unique=true)
 	private String ssn;
+	
+	@OneToMany(mappedBy="user")
+	private List<order>  Order;
 
 	//no argument constructor
 	public User() {
@@ -101,6 +117,19 @@ public class User {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
+	}
+	
+	
+	
+	
+	
+
+	public List<order> getOrder() {
+		return Order;
+	}
+
+	public void setOrder(List<order> order) {
+		Order = order;
 	}
 
 	@Override
